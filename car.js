@@ -14,6 +14,7 @@ class Car {
     this.maxForwardSpeed = 3;
     this.maxReverseSpeed = -1.5;
 
+    this.sensor = new Sensor(this,5,150,Math.PI/2);
     this.controls = new Controls();
   }
 
@@ -33,10 +34,12 @@ class Car {
     ctx.fill();
 
     ctx.restore();
+    this.sensor.draw(ctx);
   }
 
-  update(){
+  update(roadBoarders){
       this.#move();
+      this.sensor.update(roadBoarders);
   }
 
   #move(){

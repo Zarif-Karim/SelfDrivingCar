@@ -8,7 +8,7 @@ const car = new Car(road.getLaneCenter(3),window.innerHeight*0.8,30,50);
 animate();
 
 function animate(){
-    car.update();
+    car.update(road.borders);
     canvas.height = window.innerHeight;
 
     ctx.save();
@@ -18,5 +18,8 @@ function animate(){
     car.draw(ctx);
 
     ctx.restore();
+    
+    ctx.font = "30px Arial";
+    ctx.fillText(`Distance: ${-car.y.toFixed(2)}`,10,50);
     requestAnimationFrame(animate);
 }

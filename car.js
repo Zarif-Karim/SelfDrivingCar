@@ -11,8 +11,8 @@ class Car {
 
     this.friction = 0.05;
 
-    this.maxForwardSpeed = 3;
-    this.maxReverseSpeed = -1.5;
+    this.maxForwardSpeed = 6;
+    this.maxReverseSpeed = -3;
 
     this.sensor = new Sensor(this,5,150,Math.PI/2);
     this.controls = new Controls();

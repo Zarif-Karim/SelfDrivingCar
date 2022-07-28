@@ -7,17 +7,55 @@ class Sensor {
         this.raySpread = raySpread;
 
         this.rays=[];
+        this.readings = [];
     }
 
     update(roadBoarders){
         this.#castRays();
+
+        this.readings = [];
+        this.rays.forEach(ray=>{
+            this.readings.push(this.#getReadings(ray,roadBoarders));
+        });
+
+    }
+
+    #getReadings(ray,roadBoarders){
+        let touches = [];
+        
+        roadBoarders.forEach(rb => {
+            const touch = getIntersection(
+                ray[0], ray[1], rb[0],rb[1]
+            );
+
+            if(touch) touches.push(touch);
+        });
+
+        if(touches.length == 0) return null
+
+        const offsets = touches.map(t=>t.offset);
+        const minOffset = Math.min(...offsets);
+        return touches.find(t=>t.offset == minOffset);
     }
 
     draw(ctx){
-        this.rays.forEach(ray=>{
+        for(let i = 0; i < this.rayCount; ++i){
+            //untouched segment
             drawLine(ctx,
-                ray[0].x,ray[0].y,ray[1].x,ray[1].y,2,"yellow");
-        });
+                this.rays[i][0].x, this.rays[i][0].y,
+                this.rays[i][1].x, this.rays[i][1].y,
+                2,"yellow"
+            );
+
+            //touched segment
+            if(this.readings[i]){
+                drawLine(ctx,
+                    this.readings[i].x, this.readings[i].y,
+                    this.rays[i][1].x, this.rays[i][1].y,
+                    2,"black"
+                );
+            }
+        };
     }
 
     #castRays(){
